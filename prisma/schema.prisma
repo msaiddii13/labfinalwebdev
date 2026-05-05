@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Country {
+  id         Int    @id @default(autoincrement())
+  name       String @unique
+  population Int
+  area       Float
+  cities     City[]
+}
+
+model City {
+  id         Int     @id @default(autoincrement())
+  name       String
+  population Int
+  capital    Boolean @default(false)
+  visited    Boolean @default(false)
+  countryId  Int
+  country    Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+}
